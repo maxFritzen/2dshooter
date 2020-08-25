@@ -7,7 +7,6 @@ export class Enemy extends Obj {
   }
 
   move() {
-    // return
     this.dx = this.target.x - this.x;
     this.dy = this.target.y - this.y;
 
