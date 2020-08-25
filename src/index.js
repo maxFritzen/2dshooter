@@ -2,11 +2,9 @@
 import kontra, { init, angleToTarget, Sprite, GameLoop } from 'kontra';
 import { Player } from './player'
 import { Enemy } from './enemy'
-// import { projectile } from './projectile'
 import { collision } from './helper-functions'
 import '../styles.css'
 
-let { canvas, context } = init();
 kontra.initKeys();
 
 const newPlayer = new Player(
@@ -28,21 +26,8 @@ const createEnemy = () => new Enemy(
   10,
   newPlayer
 )
-// const enemy = new Enemy(
-//   50,
-//   50,
-//   'red',
-//   10,
-//   25,
-//   0.3,
-//   10,
-//   newPlayer
-// )
 
 export let projectiles = []
-let enemies = []
-
-// enemies.push(enemy)
 
 export function createProjectile (x, y, angle) {
   const projectile = Sprite({
@@ -62,37 +47,17 @@ export function createProjectile (x, y, angle) {
         if (collision(this, enemy)) {
             // collision detected!
             console.log('bang')
-            console.log('id: ', this.id)
-            console.log('projectiles: ', projectiles[0])
             enemy.hit(5);
             this.ttl = 0;
             projectiles = projectiles.filter((s) => s.id !== this.id)
-            console.log('projectiles: ', projectiles[0])
             break
         }
       }
 
-      this.advance()
-      // for (const enemy of enemies) {
-      //   if (collision(this, enemy)) {
-      //       // collision detected!
-      //       console.log('bang')
-      //       console.log('id: ', this.id)
-      //       console.log('projectiles: ', projectiles[0])
-      //       enemy.hit(5);
-      //       this.ttl = 0;
-      //       projectiles = projectiles.filter((s) => s.id !== this.id)
-      //       console.log('projectiles: ', projectiles[0])
-      //       break
-      //   }
-      // }
-      
-      
+      this.advance()    
     }
   })
   return projectile
-  // gameState.incProjectiles(projectile)
-  // projectiles.push(projectile)
 }
 
 class GameState {
@@ -144,23 +109,14 @@ let loop = GameLoop({  // create the main game loop
   update: function() { // update the game state
     gameState.getPlayer().update();
     gameState.getEnemies().map(sprite => sprite.update())
-    // enemies.map(sprite => sprite.update())
     gameState.getProjectiles().map(sprite => sprite.update())
-    // projectiles.map(sprite => sprite.update())
     gameState.removeEnemies()
     gameState.removeProjectiles()
-
-    // enemies = enemies.filter(sprite => sprite.isAlive())
-    // gameState.projectiles = gsameState.getProjectiles().filter(sprite => sprite.isAlive())
-    // projectiles = projectiles.filter(sprite => sprite.isAlive())
   },
   render: function() { // render the game state
     gameState.getPlayer().render();
-    // enemy.render();
     gameState.getEnemies().map(sprite => sprite.render())
-    // enemies.map(sprite => sprite.render())
     gameState.getProjectiles().map(sprite => sprite.render())
-    // projectiles.map(sprite => sprite.render())
   }
 });
 

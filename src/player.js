@@ -1,7 +1,6 @@
 import { keyPressed, degToRad } from 'kontra'
 import { Obj } from './Object'
-import { projectile } from './projectile'
-import { projectiles, createProjectile, gameState } from './index'
+import { gameState } from './index'
 
 export class Player extends Obj {
   constructor (x, y, color, width, height, speed, hp) {
@@ -34,8 +33,6 @@ export class Player extends Obj {
       if (this.shootingSpeedInterval) return
       console.log('shoot')
       gameState.incProjectiles(this.x, this.y, this.rotation)
-      // createProjectile(this.x, this.y, this.rotation)
-      // console.log(projectiles)
       this.shootingSpeedInterval = setTimeout(() => {
         this.shootingSpeedInterval = null
       }, 1000)
