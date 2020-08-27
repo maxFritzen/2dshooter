@@ -1,20 +1,167 @@
 import { Obj } from './Object'
+import { collision } from './helper-functions';
+import { gameState } from '.';
 
 export class Enemy extends Obj {
-  constructor (x, y, color, width, height, speed, hp, target) {
+  constructor (x, y, color, width, height, speed, hp, target, id) {
     super(x, y, color, width, height, speed, hp)
     this.target = target
+    this.y = Math.floor(Math.random() * this.context.canvas.height)
+    this.limit = 30
+    this.id = id
+    this.direction = ''
   }
 
   move() {
+    
     this.dx = this.target.x - this.x;
     this.dy = this.target.y - this.y;
 
     this.rotation = Math.atan2(this.dy,this.dx);
+    // thought: Maybe just be able to move up or down?
+    // Maybe 4px at the time?
+    let newX = this.x
+    let newY = this.y
+    let direction = this.direction // up,down,right,left
+    const targetX = Math.floor(this.target.x)
+    const targetY = Math.floor(this.target.y)
+    // if (this.x < targetX) {
+    //   direction = 'right' // funkar bara ifall de bara kan röra sig antingen upp eller ner. Men det kanske inte är så dumt!
+    //   // newX = this.x + 1 * this.speed;
+    //   // this.x += 1 * this.speed;
+    // }
+    // if (this.x > targetX) {
+    //   direction = 'left'
+    //   // newX = this.x - 1 * this.speed;
+    //   // this.x -= 1 * this.speed;
+    // }
+    // if (this.y < targetY) {
+    //   direction = 'down'
+    //   // newY = this.y + 1 * this.speed;
+    //   // this.y += 1 * this.speed;
+    // }
+    // if (this.y > targetY) {
+    //   direction = 'up'
+    //   // newY = this.y - 1 * this.speed;
+    //   // this.y -= 1 * this.speed;
+    // }
+    
+    // Check if collision
+    // loop through every enemy? what? maybe just random?Dont need to do this on every update either
+    if (this.limit < 0) {
+      let direction = this.direction // up,down,right,left
+      const targetX = Math.floor(this.target.x)
+      const targetY = Math.floor(this.target.y)
+      if (this.x < targetX) {
+        direction = 'right' // funkar bara ifall de bara kan röra sig antingen upp eller ner. Men det kanske inte är så dumt!
+        // newX = this.x + 1 * this.speed;
+        // this.x += 1 * this.speed;
+      }
+      if (this.x > targetX) {
+        direction = 'left'
+        // newX = this.x - 1 * this.speed;
+        // this.x -= 1 * this.speed;
+      }
+      if (this.y < targetY) {
+        direction = 'down'
+        // newY = this.y + 1 * this.speed;
+        // this.y += 1 * this.speed;
+      }
+      if (this.y > targetY) {
+        direction = 'up'
+        // newY = this.y - 1 * this.speed;
+        // this.y -= 1 * this.speed;
+      }
+      this.direction = direction
+      switch (direction) {
+        case 'right': {
+          newX += 1  
+          break;
+        }
+        case 'left': {
+          newX -= 1  
+          break;
+        }
+        case 'up': {
+          // console.log(this.y -= 1)
+          newY -= 1  
+          break;
+        }
+        case 'down': {
+          newY += 1  
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+      // check collision
+      const enemies = gameState.getEnemies()
+      for (let i = 0; i <= enemies.length - 1; i++) {
+        const newValues = {
+          height: this.height * 2,
+          width: this.width * 2,
+          x: newX,
+          y: newY
+        }
+        if (enemies[i].id !== this.id && collision(newValues, enemies[i])) {
+          const collidingEnemyX = enemies[i].x
+          const collidingEnemyY = enemies[i].y
+          // console.log('colliding with enemy')
+          // console.log(newValues)
+          // Dont move?
+          // Both cant stop at the same time, then it doesnt matter.
+          // Who should stop?
+          // Only between the ones colliding
+          // Kanske den som går in i den andra.
+          switch (direction) {
+            case 'right': {
+              if (newX < collidingEnemyX) {
+                newX = newX - 1
+              }
+              break;
+            }
+            case 'left': {
+              if (newX > collidingEnemyX) {
+                newX = newX + 1
+              }
+              break;
+            }
+            case 'up': {
+             
+              if (newY < collidingEnemyY) {
+                newY = newY - 1
+              } 
+              break;
+            }
+            case 'down': {
+              if (newY > collidingEnemyY) {
+                newY = newY + 1
+              } 
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+          
+        } 
+       
+      }
 
-    if (this.x <= this.target.x) this.x += 1 * this.speed;
-    if (this.x >= this.target.x) this.x -= 1 * this.speed;
-    if (this.y <= this.target.y) this.y += 1 * this.speed;
-    if (this.y >= this.target.y) this.y -= 1 * this.speed;
+      this.x = newX
+      this.y = newY
+      
+      this.limit = 30
+    } 
+    
+
+    this.limit--
+    
+
+    // should not be on top of eachother
+    // need collision-checking
+    // Maybe implement grid-system. then I can only need to check if same grid?
+    
   }
 }

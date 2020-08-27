@@ -14,14 +14,13 @@ export class Obj extends Sprite.class {
     this.hp = hp;
   }
   stayInsideMap () {
-    const { canvas } = this.context
     if (this.x <= 0) this.x = 1;
-    if (this.x + this.width >= this.canvas.width) {
-      this.x = this.canvas.width - this.width
+    if (this.x + this.width >= this.context.canvas.width) {
+      this.x = this.context.canvas.width - this.width
     }
     if (this.y <= 0) this.y = 1;
-    if (this.y + (this.height / 2) >= this.canvas.height) {
-      this.y = this.canvas.height - this.height
+    if (this.y + (this.height / 2) >= this.context.canvas.height) {
+      this.y = this.context.canvas.height - this.height
     }
   }
   hit(dmg) {

@@ -4,7 +4,7 @@ import { Player } from './player'
 import { Enemy } from './enemy'
 import { collision } from './helper-functions'
 import '../styles.css'
-
+kontra.init();
 kontra.initKeys();
 
 const newPlayer = new Player(
@@ -17,14 +17,16 @@ const newPlayer = new Player(
   10
 )
 const createEnemy = () => new Enemy(
-  50,
-  50,
+  10,
+  10,
   'red',
   10,
   25,
   0.3,
+  // Math.floor(Math.random() * 2) / 10 + 0.5,
   10,
-  newPlayer
+  newPlayer,
+  Math.random()
 )
 
 export let projectiles = []
@@ -62,7 +64,7 @@ export function createProjectile (x, y, angle) {
 
 class GameState {
   constructor () {
-    this.level = 0;
+    this.level = 2;
     this.enemies = [];
     this.projectiles = [];
     this.player = newPlayer
@@ -78,7 +80,11 @@ class GameState {
   }
 
   incEnemies () {
-    this.enemies.push(createEnemy())
+    for (let i = 0; i < this.level; i++) {
+      console.log('createenemy')
+      this.enemies.push(createEnemy())
+    }
+    
   }
 
   removeEnemies () {
@@ -87,6 +93,10 @@ class GameState {
 
   getLevel () {
     return this.level
+  }
+
+  setLevel () {
+    this.level++
   }
 
   getEnemies () {
