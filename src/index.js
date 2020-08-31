@@ -51,6 +51,7 @@ export function createProjectile (x, y, angle) {
             this.height = 5
             this.width = 8
             enemy.hit(5);
+            enemy.color = 'orange';
             this.ttl = 0;
             projectiles = projectiles.filter((s) => s.id !== this.id)
             break
