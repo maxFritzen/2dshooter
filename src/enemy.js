@@ -4,14 +4,11 @@ import { gameState } from './index';
 
 export class Enemy extends Obj {
   constructor (x, y, color, width, height, speed, hp, target, id) {
-    super(x, y, color, width, height, speed, hp)
-    const random = Math.floor(Math.random() * 5) + 3 
+    super(x, y, color, width, height, speed, hp) 
     this.target = target
-    this.y = Math.floor(Math.random() * this.context.canvas.height)
+    // this.y = Math.floor(Math.random() * this.context.canvas.height)
     this.id = id
     this.direction = ''
-    this.height = random + 1
-    this.width = random
     this.originalSpeed = this.width
     this.limit = this.originalSpeed
     this.hp = this.width + this.height
@@ -105,7 +102,7 @@ export class Enemy extends Obj {
       this.y = newY
       this.rotation = Math.atan2(this.dy,this.dx);
       
-      this.limit = this.originalSpeed
+      this.limit = this.originalSpeed + this.hp
     } 
     
 

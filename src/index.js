@@ -16,12 +16,12 @@ const newPlayer = new Player(
   2,
   10
 )
-const createEnemy = () => new Enemy(
-  10,
-  10,
+const createEnemy = (x, y, width, height) => new Enemy(
+  x,
+  y,
   'white',
-  5,
-  8,
+  width,
+  height,
   Math.floor(Math.random() * 10) + 5,
   10,
   newPlayer,
@@ -97,21 +97,30 @@ class GameState {
   }
 
   incEnemies () {
-    const stages = [ 1, 2, 3, 4 ]
+    const stages = [ 100, 200, 302, 403 ]
     const numberOfEnemies = stages[this.level]
+    this.enemies.push(createEnemy(
+      20, 50, 15, 15
+    ))
+
     for (let i = 0; i < numberOfEnemies; i++) {
       console.log('createenemy')
-      this.enemies.push(createEnemy())
+      const x = 20
+      const y = Math.floor(Math.random() * 400)
+      const random = Math.floor(Math.random() * 5) + 3 
+      const width = random
+      const height = random + 1
+      this.enemies.push(createEnemy(x, y, width, height))
     }
     
   }
 
   incBlood (x, y, angle) {
     console.log('incblood')
-    const newX = x
-    const newY = y
-    // const newX = x +  Math.floor(Math.random() * 5) -2
-    // const newY = y +  Math.floor(Math.random() * 5) -2
+    // const newX = x
+    // const newY = y
+    const newX = x +  Math.floor(Math.random() * 3) -1
+    const newY = y +  Math.floor(Math.random() * 3) -1
     this.blood.push(createBlood(newX, newY, angle))
     console.log('blood: ', this.blood )
   }
