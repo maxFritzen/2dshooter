@@ -47,7 +47,6 @@ export function createProjectile (x, y, angle) {
       for (const enemy of gameState.getEnemies()) {
         if (collision(this, enemy)) {
             // collision detected!
-            console.log('bang')
             gameState.incBlood(this.x, this.y, angle)
             this.height = 5
             this.width = 8
@@ -123,7 +122,6 @@ class GameState {
     ))
 
     for (let i = 0; i < numberOfEnemies; i++) {
-      console.log('createenemy')
       const x = 20
       const y = Math.floor(Math.random() * 400)
       const random = Math.floor(Math.random() * 5) + 3 
@@ -135,13 +133,11 @@ class GameState {
   }
 
   incBlood (x, y, angle) {
-    console.log('incblood')
     // const newX = x
     // const newY = y
     const newX = x +  Math.floor(Math.random() * 3) -1
     const newY = y +  Math.floor(Math.random() * 3) -1
     this.blood.push(createBlood(newX, newY, angle))
-    console.log('blood: ', this.blood )
   }
 
   getBlood () {
