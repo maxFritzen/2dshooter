@@ -64,6 +64,21 @@ export function createProjectile (x, y, angle) {
   return projectile
 }
 
+export function createFireEffect (x, y, angle) {
+  const projectile = Sprite({
+    id: x + y + angle, 
+    x: x,
+    y: y,
+    width: 2,
+    height: 3,
+    rotation: angle,
+    color: 'yellow',
+    ttl: 5,
+    anchor: { x: -0.3, y: 0.5 }
+  })
+  return projectile
+}
+
 export function createBlood (x, y, angle) {
   const blood = Sprite({
     id: x + y + angle, 
@@ -83,14 +98,18 @@ class GameState {
     this.level = 0;
     this.enemies = [];
     this.projectiles = [];
+    this.fireEffects = [];
     this.player = newPlayer
     this.blood = []
   }
 
   incProjectiles (x, y, angle) {
     const newProjectile = createProjectile(x, y, angle)
+    const newFireEffect = createFireEffect(x, y, angle)
     this.projectiles.push(newProjectile)
+    this.fireEffects.push(newFireEffect)
   }
+  
 
   removeProjectiles () {
     this.projectiles = this.projectiles.filter(sprite => sprite.isAlive())
@@ -129,6 +148,10 @@ class GameState {
     return this.blood
   }
 
+  removeFireEffects () {
+    this.fireEffects = this.fireEffects.filter(sprite => sprite.isAlive())
+  }
+
   removeEnemies () {
     this.enemies = this.enemies.filter(sprite => sprite.isAlive())
   }
@@ -149,6 +172,10 @@ class GameState {
     return this.projectiles
   }
 
+  getFireEffects () {
+    return this.fireEffects
+  }
+
   getPlayer () {
     return this.player
   }
@@ -163,8 +190,10 @@ let loop = GameLoop({  // create the main game loop
     gameState.getBlood().map(sprite => sprite.update())
     gameState.getEnemies().map(sprite => sprite.update())
     gameState.getProjectiles().map(sprite => sprite.update())
+    gameState.getFireEffects().map(sprite => sprite.update())
     gameState.removeEnemies()
     gameState.removeProjectiles()
+    gameState.removeFireEffects()
     if (gameState.getEnemies().length <= 0) {
       gameState.incLevel()
       gameState.incEnemies()
@@ -176,6 +205,7 @@ let loop = GameLoop({  // create the main game loop
     gameState.getPlayer().render();
     gameState.getEnemies().map(sprite => sprite.render())
     gameState.getProjectiles().map(sprite => sprite.render())
+    gameState.getFireEffects().map(sprite => sprite.render())
   }
 });
 
