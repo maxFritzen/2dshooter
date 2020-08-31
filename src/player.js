@@ -73,7 +73,7 @@ export class Player extends Obj {
       gameState.incProjectiles(this.x, this.y, this.rotation)
       this.shootingSpeedInterval = setTimeout(() => {
         this.shootingSpeedInterval = null
-      }, 1000)
+      }, 100)
   }
   move() {
     if (keyPressed('left')) {

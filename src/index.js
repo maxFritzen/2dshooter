@@ -11,19 +11,18 @@ const newPlayer = new Player(
   150,
   250,
   'blue',
+  3,
   5,
-  25,
   2,
   10
 )
 const createEnemy = () => new Enemy(
   10,
   10,
-  'red',
-  10,
-  25,
-  0.3,
-  // Math.floor(Math.random() * 2) / 10 + 0.5,
+  'white',
+  5,
+  8,
+  Math.floor(Math.random() * 10) + 5,
   10,
   newPlayer,
   Math.random()
@@ -36,8 +35,8 @@ export function createProjectile (x, y, angle) {
     id: x + y + angle, 
     x: x,
     y: y,
-    width: 5,
-    height: 2,
+    width: 3,
+    height: 1,
     rotation: angle,
     dx: Math.cos(angle) * 2.5,
     dy: Math.sin(angle) * 2.5,
@@ -49,6 +48,9 @@ export function createProjectile (x, y, angle) {
         if (collision(this, enemy)) {
             // collision detected!
             console.log('bang')
+            gameState.incBlood(this.x, this.y, angle)
+            this.height = 5
+            this.width = 8
             enemy.hit(5);
             this.ttl = 0;
             projectiles = projectiles.filter((s) => s.id !== this.id)
@@ -62,12 +64,27 @@ export function createProjectile (x, y, angle) {
   return projectile
 }
 
+export function createBlood (x, y, angle) {
+  const blood = Sprite({
+    id: x + y + angle, 
+    x: x,
+    y: y,
+    width: 2,
+    height: 2,
+    rotation: angle,
+    color: 'red',
+    ttl: 300
+  })
+  return blood
+}
+
 class GameState {
   constructor () {
-    this.level = 1;
+    this.level = 0;
     this.enemies = [];
     this.projectiles = [];
     this.player = newPlayer
+    this.blood = []
   }
 
   incProjectiles (x, y, angle) {
@@ -80,11 +97,27 @@ class GameState {
   }
 
   incEnemies () {
-    for (let i = 0; i < this.level; i++) {
+    const stages = [ 1, 2, 3, 4 ]
+    const numberOfEnemies = stages[this.level]
+    for (let i = 0; i < numberOfEnemies; i++) {
       console.log('createenemy')
       this.enemies.push(createEnemy())
     }
     
+  }
+
+  incBlood (x, y, angle) {
+    console.log('incblood')
+    const newX = x
+    const newY = y
+    // const newX = x +  Math.floor(Math.random() * 5) -2
+    // const newY = y +  Math.floor(Math.random() * 5) -2
+    this.blood.push(createBlood(newX, newY, angle))
+    console.log('blood: ', this.blood )
+  }
+
+  getBlood () {
+    return this.blood
   }
 
   removeEnemies () {
@@ -118,6 +151,7 @@ gameState.incEnemies()
 let loop = GameLoop({  // create the main game loop
   update: function() { // update the game state
     gameState.getPlayer().update();
+    gameState.getBlood().map(sprite => sprite.update())
     gameState.getEnemies().map(sprite => sprite.update())
     gameState.getProjectiles().map(sprite => sprite.update())
     gameState.removeEnemies()
@@ -129,6 +163,7 @@ let loop = GameLoop({  // create the main game loop
 
   },
   render: function() { // render the game state
+    gameState.getBlood().map(sprite => sprite.render())
     gameState.getPlayer().render();
     gameState.getEnemies().map(sprite => sprite.render())
     gameState.getProjectiles().map(sprite => sprite.render())

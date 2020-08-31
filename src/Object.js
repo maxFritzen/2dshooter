@@ -1,6 +1,5 @@
 import { Sprite } from 'kontra';
 
-
 export class Obj extends Sprite.class {
   constructor (x, y, color, width, height, speed, hp) {
     super();
