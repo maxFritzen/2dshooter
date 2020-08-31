@@ -4,7 +4,6 @@ import { gameState } from './index'
 
 const possibleDirections = ['up', 'right', 'down', 'left']
 const getRotation = (direction) => {
-  console.log('getRotation', direction)
   switch (direction) {
     case 'right': {
       return degToRad(0)
@@ -15,7 +14,6 @@ const getRotation = (direction) => {
       break;
     }
     case 'up': {
-      // console.log(this.y -= 1)
       return degToRad(270)
       break;
     }
@@ -39,7 +37,6 @@ export class Player extends Obj {
   rotate(direction) {
     // Perhaps should be able to rotate down-left and so on ?
     if (this.rotateSpeedInterval) return
-      console.log('rotate: ', direction)  
       const currentIndex = possibleDirections.indexOf(this.direction)
       let newIndex = currentIndex
       switch (direction) {
@@ -73,7 +70,6 @@ export class Player extends Obj {
   }
   shoot () {
     if (this.shootingSpeedInterval) return
-      console.log('shoot')
       gameState.incProjectiles(this.x, this.y, this.rotation)
       this.shootingSpeedInterval = setTimeout(() => {
         this.shootingSpeedInterval = null

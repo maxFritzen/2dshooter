@@ -23,14 +23,10 @@ export class Enemy extends Obj {
     // Maybe 4px at the time?
     let newX = this.x
     let newY = this.y
-    let direction = this.direction // up,down,right,left
-    const targetX = Math.floor(this.target.x)
-    const targetY = Math.floor(this.target.y)
     
     // Check if collision
     // loop through every enemy? what? maybe just random?Dont need to do this on every update either
     if (this.limit < 0) {
-      console.log(this.rotation * 180/Math.PI)
       let direction = this.direction // up,down,right,left
       const targetX = Math.floor(this.target.x)
       const targetY = Math.floor(this.target.y)

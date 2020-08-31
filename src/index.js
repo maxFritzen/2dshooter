@@ -64,7 +64,7 @@ export function createProjectile (x, y, angle) {
 
 class GameState {
   constructor () {
-    this.level = 2;
+    this.level = 1;
     this.enemies = [];
     this.projectiles = [];
     this.player = newPlayer
@@ -95,7 +95,7 @@ class GameState {
     return this.level
   }
 
-  setLevel () {
+  incLevel () {
     this.level++
   }
 
@@ -122,6 +122,11 @@ let loop = GameLoop({  // create the main game loop
     gameState.getProjectiles().map(sprite => sprite.update())
     gameState.removeEnemies()
     gameState.removeProjectiles()
+    if (gameState.getEnemies().length <= 0) {
+      gameState.incLevel()
+      gameState.incEnemies()
+    }
+
   },
   render: function() { // render the game state
     gameState.getPlayer().render();
