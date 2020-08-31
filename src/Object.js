@@ -23,7 +23,6 @@ export class Obj extends Sprite.class {
     }
   }
   hit(dmg) {
-    console.log('hit', dmg, this.hp)
     this.hp -= dmg
     if (this.hp <= 0) {
       this.ttl = 0;
