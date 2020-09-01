@@ -6,6 +6,8 @@ export class Obj extends Sprite.class {
     this.x = x
     this.y = y
     this.color = color
+    this.damageColor = 'orange'
+    this.originalColor = color
     this.width = width
     this.height = height
     this.anchor = {x: 0.5, y: 0.5}
@@ -23,7 +25,13 @@ export class Obj extends Sprite.class {
     }
   }
   hit(dmg) {
+    // Not sure about this
     this.hp -= dmg
+    this.color = this.damageColor
+    setTimeout(() => {
+      console.log('timeout')
+      this.color = this.originalColor
+    }, 100)
     if (this.hp <= 0) {
       this.ttl = 0;
     }
